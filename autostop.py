@@ -113,7 +113,7 @@ resource, last_active_time = max(activities, key=lambda x: x[1])
 print(f"Last activity resource={resource} time={last_active_time}")
 
 # ==================== Quota Usage Handler =======================
-dynamodb = boto3.client('dynamodb')
+dynamodb = boto3.resource('dynamodb')
 table = dynamodb.Table('devhub')
 
 def update_session(timestamp, stage, username, month):
