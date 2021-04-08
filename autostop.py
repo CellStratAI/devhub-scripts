@@ -165,7 +165,7 @@ def to_datetime(time_str):
 username = get_notebook_name()[3:]
 curr_month = datetime.utcnow().strftime('%Y-%m')
 data = table.get_item(Key={'username': username, 'month': curr_month})['Item']
-curr_time = (datetime.utcnow() + timedelta(minutes=60)).strftime("%Y-%m-%d %H:%M")
+curr_time = datetime.utcnow().strftime("%Y-%m-%d %H:%M")
 quota = timedelta(hours=int(data['quota'])).total_seconds()
 is_quota = False
 
@@ -173,11 +173,12 @@ is_quota = False
 if data['lastPing'] == 'inactive':
     update_session(curr_time, 0, username, curr_month)
     update_value('lastPing', curr_time, username, curr_month)
+    print('Notebook Starting...Sent the first Ping!')
 # On cron ping
 else:
     add_usage = to_datetime(curr_time) - to_datetime(data['lastPing'])
     new_usage = str2sec(data['used']) + add_usage.total_seconds()
-    print(new_usage)
+    print('Ping...New Usage', new_usage)
     if new_usage > quota:
         print('Quota Exceeded')
         update_value('used', sec2str(quota), username, curr_month)
