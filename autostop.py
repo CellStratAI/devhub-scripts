@@ -96,6 +96,7 @@ def last_kernel_connection_activity(kernel):
 last_active_time = datetime.now() - timedelta(days=3*365)
 response = requests.get('https://localhost:'+port+'/api/sessions', verify=False)
 notebooks = response.json()
+print("Session Data:", notebooks)
 activities = []
 
 execution_activities = [('execution', last_kernel_execution_activity(n['kernel'])) for n in notebooks]
